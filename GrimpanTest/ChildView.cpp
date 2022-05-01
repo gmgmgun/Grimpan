@@ -109,7 +109,7 @@ void CChildView::OnDraw()
 	//	//POSITION pos = m_figureList->GetTailPosition();
 	//	//m_figureList->RemoveAt(pos);
 	//}
-	//公均阑 弊副瘤?
+	//公均阑 弊副瘤? 111
 	switch (m_mode)
 	{
 	case 1:
