@@ -191,7 +191,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	// 피규어 객체 생성.
 	m_figure = std::make_shared<Figure>();
 
-	//첫점과 끝점 세팅.
+	//첫점과 끝점 세팅함.
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
 	//그린다.
