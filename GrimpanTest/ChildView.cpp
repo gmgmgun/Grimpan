@@ -110,6 +110,7 @@ void CChildView::OnDraw()
 	//	//m_figureList->RemoveAt(pos);
 	//}
 	//무엇을 그릴지?
+	//1234
 	switch (m_mode)
 	{
 	case 1:
