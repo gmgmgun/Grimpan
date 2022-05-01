@@ -108,7 +108,7 @@ void CChildView::OnDraw()
 	//	mainG.DrawLine(&pen,p1.X,p1.Y,p2.X,p2.Y);
 	//	//POSITION pos = m_figureList->GetTailPosition();
 	//	//m_figureList->RemoveAt(pos);
-	//}
+	//} hohoho
 	switch (m_mode)
 	{
 	case 1:
