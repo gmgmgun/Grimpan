@@ -1,0 +1,9 @@
+diff a/GrimpanTest/ChildView.cpp b/GrimpanTest/ChildView.cpp	(rejected hunks)
+@@ -109,6 +109,7 @@
+ 	//	//POSITION pos = m_figureList->GetTailPosition();
+ 	//	//m_figureList->RemoveAt(pos);
+ 	//}
++	//������ �׸���? 111
+ 	switch (m_mode)
+ 	{
+ 	case 1:
