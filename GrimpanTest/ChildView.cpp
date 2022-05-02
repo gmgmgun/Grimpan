@@ -108,7 +108,7 @@ void CChildView::OnDraw()
 	//	mainG.DrawLine(&pen,p1.X,p1.Y,p2.X,p2.Y);
 	//	//POSITION pos = m_figureList->GetTailPosition();
 	//	//m_figureList->RemoveAt(pos);
-	//} hohoho
+	//}
 	switch (m_mode)
 	{
 	case 1:
@@ -195,7 +195,6 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
 	//그린다.
-	//OnDraw();
 	InvalidateRect(FALSE);
 	//Invalidate(FALSE);
 	CWnd::OnLButtonDown(nFlags, point);
@@ -212,7 +211,11 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		m_point.Y = point.y;
 		m_IsSetStart = false;
 		m_figure->SetPoint(m_point, m_IsSetStart);
-		
+		HBRUSH h_blue_brush = CreateSolidBrush(RGB(0, 0, 255));
+		HDC h_dc = ::GetDC(m_hWnd);
+		SelectObject(h_dc, h_blue_brush);
+		//::ReleaseDC(m_hWnd, h_dc);
+		//InvalidateRect(rt, FALSE);
 		CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
 		//CRect rt;
 		//윈도우 핸들 얻기
@@ -222,10 +225,11 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		//::GetClientRect(hWnd, rt);
 		//Invalidate(TRUE) : WM_PAINT 메세지 발생, TRUE:배경 포함 재출력 / FALSE:배경 제외 재출력
 		//InvalidateRect(TRUE);
-		InvalidateRect(rt,FALSE);
+		InvalidateRect(rt,TRUE);
+		FillRect(h_dc,rt,h_blue_brush);
 		//UpdateWindow() : 갱신할 영역이 있으면 즉시 갱신하세요
 		//UpdateWindow();
-		//Invalidate(TRUE);
+		//Invalidate(FALSE);
 
 	}
 	CWnd::OnMouseMove(nFlags, point);
@@ -241,7 +245,6 @@ void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 	//m_point.Y = point.y;
 	//m_IsSetStart = false;
 	//m_figure->SetPoint(m_point, m_IsSetStart);
-	//OnDraw();
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
