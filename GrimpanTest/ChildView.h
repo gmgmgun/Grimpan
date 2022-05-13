@@ -62,6 +62,8 @@ public:
 	int m_mode;
 	bool m_IsBtnDown;
 	bool m_IsSetStart;
+	bool m_IsMouseMove;
+	HDC m_dc;
 	void InitCanvas();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

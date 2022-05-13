@@ -17,7 +17,7 @@
 CChildView::CChildView()
 {
 	m_IsBtnDown = false;
-
+	m_IsMouseMove = false;
 }
 
 CChildView::~CChildView()
@@ -92,6 +92,9 @@ void CChildView::OnDraw()
 	//Gdiplus::Graphics g(m_canvas.get());
 	//Gdiplus::Graphics g(hDC);
 	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 20);
+	
+	//리스트
+	/*
 	Figure m_figure2;
 	POSITION pos = m_figureList->GetHeadPosition();
 	for (int i = 1; i <= m_figureList->GetCount(); i++)
@@ -99,6 +102,19 @@ void CChildView::OnDraw()
 		m_figure2 = m_figureList->GetNext(pos);
 		mainG.DrawLine(&pen, m_figure2.startPoint.X, m_figure2.startPoint.Y, m_figure2.endPoint.X, m_figure2.endPoint.Y);
 	}
+	*/
+	//if (m_IsMouseMove == true)
+	//{
+	//	Gdiplus::SolidBrush mySolidBrush(Gdiplus::Color(255, 255, 255, 255));
+	//	Gdiplus::Rect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//	mainG.FillRectangle(&mySolidBrush,rt);
+	//	HDC h_dc = ::GetDC(m_hWnd);
+	//	BitBlt(h_dc, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y, m_dc, 0, 0, SRCCOPY);
+
+	//	::ReleaseDC(m_hWnd, h_dc);         // 사용하던 DC를 해제한다.
+	//	::ReleaseDC(m_hWnd, m_dc);  // 사용하던 DC를 해제한다.
+
+	//}
 	//while (!m_figureList->IsEmpty())
 	//{
 	//	Gdiplus::Point p1;
@@ -180,10 +196,11 @@ void CChildView::OnFileExit()
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 
-	if (m_figureList->GetCount() != 0)
-	{
-		Invalidate(FALSE);
-	}
+	m_dc = ::GetDC(m_hWnd);
+	//if (m_figureList->GetCount() != 0)
+	//{
+	//	Invalidate(FALSE);
+	//}
 	m_IsBtnDown = true;
 	//버튼 다운 시 마우스 포인트 좌표를 멤버 포인트 변수에 저장.
 	m_point.X = point.x;
@@ -195,14 +212,48 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
 	//그린다.
-	InvalidateRect(FALSE);
+	CPoint startPoint;
+	CPoint endPoint;
+	int offset = 100;
+	startPoint.x = m_figure->startPoint.X;
+	startPoint.y = m_figure->startPoint.Y;
+	endPoint.x = m_figure->endPoint.X;
+	endPoint.y = m_figure->endPoint.Y;
+	if (startPoint.x > endPoint.x)
+	{
+		startPoint.x += offset;
+		endPoint.x -= offset;
+	}
+	else if (startPoint.x < endPoint.x)
+	{
+		startPoint.x -= offset;
+		endPoint.x += offset;
+	}
+	if (startPoint.y > endPoint.y)
+	{
+		startPoint.y += offset;
+		endPoint.y -= offset;
+	}
+	else if (startPoint.y < endPoint.y)
+	{
+		startPoint.y -= offset;
+		endPoint.y += offset;
+	}
+
+	CRect rt(startPoint, endPoint);
+	//CRect rt(endPoint, startPoint);
+	InvalidateRect(rt, FALSE);
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//InvalidateRect(rt,FALSE);
 	//Invalidate(FALSE);
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
-
+	m_IsMouseMove = true;
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//InvalidateRect(rt, FALSE);
 	if (m_IsBtnDown == true) {
 		//UpdateWindow();
 		if (m_figure == NULL)
@@ -211,12 +262,44 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		m_point.Y = point.y;
 		m_IsSetStart = false;
 		m_figure->SetPoint(m_point, m_IsSetStart);
-		HBRUSH h_blue_brush = CreateSolidBrush(RGB(0, 0, 255));
-		HDC h_dc = ::GetDC(m_hWnd);
-		SelectObject(h_dc, h_blue_brush);
+		CPoint startPoint;
+		CPoint endPoint;
+		int offset = 100;
+		startPoint.x = m_figure->startPoint.X;
+		startPoint.y = m_figure->startPoint.Y;
+		endPoint.x = m_figure->endPoint.X;
+		endPoint.y = m_figure->endPoint.Y;
+		if (startPoint.x > endPoint.x)
+		{
+			startPoint.x += offset;
+			endPoint.x -= offset;
+		}
+		else if (startPoint.x < endPoint.x)
+		{
+			startPoint.x -= offset;
+			endPoint.x += offset;
+		}
+		if (startPoint.y > endPoint.y)
+		{
+			startPoint.y += offset;
+			endPoint.y -= offset;
+		}
+		else if (startPoint.y < endPoint.y)
+		{
+			startPoint.y -= offset;
+			endPoint.y += offset;
+		}
+		//CRect rt(endPoint, startPoint);
+		CRect rt(startPoint, endPoint);
+		InvalidateRect(rt, TRUE);
+		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+		//InvalidateRect(rt, FALSE);
+		//HBRUSH h_blue_brush = CreateSolidBrush(RGB(255, 255, 255));
+		//HDC h_dc = ::GetDC(m_hWnd);
+		//SelectObject(h_dc, h_blue_brush);
 		//::ReleaseDC(m_hWnd, h_dc);
 		//InvalidateRect(rt, FALSE);
-		CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
 		//CRect rt;
 		//윈도우 핸들 얻기
 		//CWnd *pWnd = AfxGetMainWnd();
@@ -225,8 +308,8 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		//::GetClientRect(hWnd, rt);
 		//Invalidate(TRUE) : WM_PAINT 메세지 발생, TRUE:배경 포함 재출력 / FALSE:배경 제외 재출력
 		//InvalidateRect(TRUE);
-		InvalidateRect(rt,TRUE);
-		FillRect(h_dc,rt,h_blue_brush);
+		//InvalidateRect(rt,TRUE);
+		//FillRect(h_dc,rt,h_blue_brush);
 		//UpdateWindow() : 갱신할 영역이 있으면 즉시 갱신하세요
 		//UpdateWindow();
 		//Invalidate(FALSE);
@@ -237,6 +320,7 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	m_IsMouseMove = false;
 	m_IsBtnDown = false;
 	SaveFigure(m_figure->startPoint,m_figure->endPoint);
 	//if(m_figure == NULL)
@@ -269,7 +353,7 @@ void CChildView::InitCanvas()
 	this->GetClientRect(&rect);
 	m_canvas = std::make_shared<Gdiplus::Bitmap>(rect.Width(), rect.Height());
 	Gdiplus::Graphics graphicsOfcanvas(m_canvas.get());
-	Gdiplus::SolidBrush whiteBrush(Gdiplus::Color(255, 255, 255, 0));
+	Gdiplus::SolidBrush whiteBrush(Gdiplus::Color(255, 255, 255, 255));
 	graphicsOfcanvas.FillRectangle(&whiteBrush, 0, 0, rect.Width(), rect.Height());
 }
 
