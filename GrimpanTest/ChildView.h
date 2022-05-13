@@ -60,6 +60,8 @@ public:
 	//void LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint);
 	//CList<Figure, Figure&> m_figureList;
 	int m_mode;
+	int m_ThicknessOfPen;
+	bool m_IsMouseMove;
 	bool m_IsBtnDown;
 	bool m_IsSetStart;
 	void InitCanvas();

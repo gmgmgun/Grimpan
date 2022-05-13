@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "GrimpanTest.h"
 #include "ChildView.h"
+#include <cmath>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -16,8 +17,11 @@
 //CChildView
 CChildView::CChildView()
 {
-	m_IsBtnDown = false;
-
+	int m_mode = 0;
+	int m_ThicknessOfPen = 0;
+	bool m_IsMouseMove = false;
+	bool m_IsBtnDown = false;
+	bool m_IsSetStart = false;
 }
 
 CChildView::~CChildView()
@@ -82,23 +86,52 @@ void CChildView::OnDraw()
 		return;
 	if (m_figure == nullptr)
 		return;
-
-
 	CPaintDC dc(this); // device context for painting
-
+	
 	Gdiplus::Graphics mainG(dc.GetSafeHdc());
 	//mainG.DrawImage(m_canvas.get(), 0, 0, m_canvas->GetWidth(), m_canvas->GetHeight());
 
 	//Gdiplus::Graphics g(m_canvas.get());
 	//Gdiplus::Graphics g(hDC);
-	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 20);
-	Figure m_figure2;
-	POSITION pos = m_figureList->GetHeadPosition();
-	for (int i = 1; i <= m_figureList->GetCount(); i++)
+	m_ThicknessOfPen = 20;
+	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), m_ThicknessOfPen);
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+	CRect rt(0, 0, 10000, 10000);
+	Gdiplus::Bitmap memBmp(rt.Width(),rt.Height());
+	Gdiplus::Graphics memG(&memBmp);
+	Gdiplus::SolidBrush brs(Gdiplus::Color(255, 255, 255, 255));
+	memG.FillRectangle(&brs, 0, 0, rt.Width(), rt.Height());
+	switch (m_mode)
 	{
-		m_figure2 = m_figureList->GetNext(pos);
-		mainG.DrawLine(&pen, m_figure2.startPoint.X, m_figure2.startPoint.Y, m_figure2.endPoint.X, m_figure2.endPoint.Y);
+	case 1:
+		break;
+	case 2:
+		//memG.DrawLine(&pen, m_figure->startPoint.X-100, m_figure->startPoint.Y+100, m_figure->endPoint.X+100, m_figure->endPoint.Y-100);
+		memG.DrawLine(&pen, m_figure->startPoint.X, m_figure->startPoint.Y , m_figure->endPoint.X , m_figure->endPoint.Y );
+		break;
+	case 3:
+		memG.DrawRectangle(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+		break;
+	case 4:
+		memG.DrawEllipse(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+		break;
+	case 5:
+		Gdiplus::FontFamily fontFamily(L"Times New Roman");
+		Gdiplus::Font font(&fontFamily, 24, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+		Gdiplus::PointF pointF(m_figure->endPoint.X, m_figure->endPoint.Y);
+		Gdiplus::SolidBrush solidBrush(Gdiplus::Color(255, 0, 0, 255));
+		memG.DrawString(L"TEXT", -1, &font, pointF, &solidBrush);
+		break;
 	}
+	mainG.DrawImage(&memBmp, 0, 0);
+	//Figure m_figure2;
+	//POSITION pos = m_figureList->GetHeadPosition();
+	//for (int i = 1; i <= m_figureList->GetCount(); i++)
+	//{
+	//	m_figure2 = m_figureList->GetNext(pos);
+	//	memG.DrawLine(&pen, m_figure2.startPoint.X, m_figure2.startPoint.Y, m_figure2.endPoint.X, m_figure2.endPoint.Y);
+	//}
+
 	//while (!m_figureList->IsEmpty())
 	//{
 	//	Gdiplus::Point p1;
@@ -109,28 +142,30 @@ void CChildView::OnDraw()
 	//	//POSITION pos = m_figureList->GetTailPosition();
 	//	//m_figureList->RemoveAt(pos);
 	//}
-	switch (m_mode)
-	{
-	case 1:
-		break;
-	case 2:
-		mainG.DrawLine(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
-		break;
-	case 3:
-		mainG.DrawRectangle(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
-		break;
-	case 4:
-		mainG.DrawEllipse(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
-		break;
-	case 5:
-		Gdiplus::FontFamily fontFamily(L"Times New Roman");
-		Gdiplus::Font font(&fontFamily, 24, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
-		Gdiplus::PointF pointF(m_figure->endPoint.X, m_figure->endPoint.Y);
-		Gdiplus::SolidBrush solidBrush(Gdiplus::Color(255, 0, 0, 255));
+	
+	//memg 테스트 전
+	//switch (m_mode)
+	//{
+	//case 1:
+	//	break;
+	//case 2:
+	//	mainG.DrawLine(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+	//	break;
+	//case 3:
+	//	mainG.DrawRectangle(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//	break;
+	//case 4:
+	//	mainG.DrawEllipse(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+	//	break;
+	//case 5:
+	//	Gdiplus::FontFamily fontFamily(L"Times New Roman");
+	//	Gdiplus::Font font(&fontFamily, 24, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+	//	Gdiplus::PointF pointF(m_figure->endPoint.X, m_figure->endPoint.Y);
+	//	Gdiplus::SolidBrush solidBrush(Gdiplus::Color(255, 0, 0, 255));
 
-		mainG.DrawString(L"TEXT", -1, &font, pointF, &solidBrush);
-		break;
-	}
+	//	mainG.DrawString(L"TEXT", -1, &font, pointF, &solidBrush);
+	//	break;
+	//}
 	//::ReleaseDC(hWnd, hDC);
 }
 
@@ -204,6 +239,7 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
 
 	if (m_IsBtnDown == true) {
+		m_IsMouseMove = true;
 		//UpdateWindow();
 		if (m_figure == NULL)
 			return;
@@ -211,11 +247,12 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		m_point.Y = point.y;
 		m_IsSetStart = false;
 		m_figure->SetPoint(m_point, m_IsSetStart);
-		HBRUSH h_blue_brush = CreateSolidBrush(RGB(0, 0, 255));
-		HDC h_dc = ::GetDC(m_hWnd);
-		SelectObject(h_dc, h_blue_brush);
+		//BRUSH h_blue_brush = CreateSolidBrush(RGB(0, 0, 255));
+		//HDC h_dc = ::GetDC(m_hWnd);
+		//SelectObject(h_dc, h_blue_brush);
 		//::ReleaseDC(m_hWnd, h_dc);
 		//InvalidateRect(rt, FALSE);
+		//CRect rt(m_figure->startPoint.X-sqrt(m_ThicknessOfPen*0.25), m_figure->startPoint.Y+ sqrt(m_ThicknessOfPen*0.25), m_figure->endPoint.X+ sqrt(m_ThicknessOfPen*0.25), m_figure->endPoint.Y- sqrt(m_ThicknessOfPen*0.25));
 		CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
 		//CRect rt;
 		//윈도우 핸들 얻기
@@ -225,11 +262,12 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		//::GetClientRect(hWnd, rt);
 		//Invalidate(TRUE) : WM_PAINT 메세지 발생, TRUE:배경 포함 재출력 / FALSE:배경 제외 재출력
 		//InvalidateRect(TRUE);
-		InvalidateRect(rt,TRUE);
-		FillRect(h_dc,rt,h_blue_brush);
+		InvalidateRect(FALSE);
+		//FillRect(h_dc,rt,h_blue_brush);
 		//UpdateWindow() : 갱신할 영역이 있으면 즉시 갱신하세요
 		//UpdateWindow();
 		//Invalidate(FALSE);
+		//m_IsMouseMove = false;
 
 	}
 	CWnd::OnMouseMove(nFlags, point);
@@ -252,6 +290,8 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	if (CWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	m_figureList = std::make_shared<CList<Figure, Figure&>>();
+
+	return 0;
 }
 
 void CChildView::OnDrawCanvas() {
@@ -269,7 +309,7 @@ void CChildView::InitCanvas()
 	this->GetClientRect(&rect);
 	m_canvas = std::make_shared<Gdiplus::Bitmap>(rect.Width(), rect.Height());
 	Gdiplus::Graphics graphicsOfcanvas(m_canvas.get());
-	Gdiplus::SolidBrush whiteBrush(Gdiplus::Color(255, 255, 255, 0));
+	Gdiplus::SolidBrush whiteBrush(Gdiplus::Color(255, 255, 255, 255));
 	graphicsOfcanvas.FillRectangle(&whiteBrush, 0, 0, rect.Width(), rect.Height());
 }
 
