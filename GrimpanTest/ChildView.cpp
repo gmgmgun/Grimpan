@@ -6,7 +6,6 @@
 #include "framework.h"
 #include "GrimpanTest.h"
 #include "ChildView.h"
-#include <cmath>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,6 +21,8 @@ CChildView::CChildView()
 	bool m_IsMouseMove = false;
 	bool m_IsBtnDown = false;
 	bool m_IsSetStart = false;
+	bool m_IsBtnDown = false;
+	bool m_IsMouseMove = false;
 }
 
 CChildView::~CChildView()
@@ -93,15 +94,13 @@ void CChildView::OnDraw()
 
 	//Gdiplus::Graphics g(m_canvas.get());
 	//Gdiplus::Graphics g(hDC);
-	m_ThicknessOfPen = 20;
-	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), m_ThicknessOfPen);
-	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
-	CRect rt(0, 0, 10000, 10000);
-	Gdiplus::Bitmap memBmp(rt.Width(),rt.Height());
-	Gdiplus::Graphics memG(&memBmp);
-	Gdiplus::SolidBrush brs(Gdiplus::Color(255, 255, 255, 255));
-	memG.FillRectangle(&brs, 0, 0, rt.Width(), rt.Height());
-	switch (m_mode)
+	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 20);
+	
+	//ï¿½ï¿½ï¿½ï¿½Æ®
+	/*
+	Figure m_figure2;
+	POSITION pos = m_figureList->GetHeadPosition();
+	for (int i = 1; i <= m_figureList->GetCount(); i++)
 	{
 	case 1:
 		break;
@@ -123,15 +122,19 @@ void CChildView::OnDraw()
 		memG.DrawString(L"TEXT", -1, &font, pointF, &solidBrush);
 		break;
 	}
-	mainG.DrawImage(&memBmp, 0, 0);
-	//Figure m_figure2;
-	//POSITION pos = m_figureList->GetHeadPosition();
-	//for (int i = 1; i <= m_figureList->GetCount(); i++)
+	*/
+	//if (m_IsMouseMove == true)
 	//{
-	//	m_figure2 = m_figureList->GetNext(pos);
-	//	memG.DrawLine(&pen, m_figure2.startPoint.X, m_figure2.startPoint.Y, m_figure2.endPoint.X, m_figure2.endPoint.Y);
-	//}
+	//	Gdiplus::SolidBrush mySolidBrush(Gdiplus::Color(255, 255, 255, 255));
+	//	Gdiplus::Rect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//	mainG.FillRectangle(&mySolidBrush,rt);
+	//	HDC h_dc = ::GetDC(m_hWnd);
+	//	BitBlt(h_dc, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y, m_dc, 0, 0, SRCCOPY);
 
+	//	::ReleaseDC(m_hWnd, h_dc);         // ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ DCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	//	::ReleaseDC(m_hWnd, m_dc);  // ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ DCï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+
+	//}
 	//while (!m_figureList->IsEmpty())
 	//{
 	//	Gdiplus::Point p1;
@@ -143,7 +146,7 @@ void CChildView::OnDraw()
 	//	//m_figureList->RemoveAt(pos);
 	//}
 	
-	//memg Å×½ºÆ® Àü
+	//memg ï¿½×½ï¿½Æ® ï¿½ï¿½
 	//switch (m_mode)
 	//{
 	//case 1:
@@ -215,29 +218,64 @@ void CChildView::OnFileExit()
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 
-	if (m_figureList->GetCount() != 0)
-	{
-		Invalidate(FALSE);
-	}
+	m_dc = ::GetDC(m_hWnd);
+	//if (m_figureList->GetCount() != 0)
+	//{
+	//	Invalidate(FALSE);
+	//}
 	m_IsBtnDown = true;
-	//¹öÆ° ´Ù¿î ½Ã ¸¶¿ì½º Æ÷ÀÎÆ® ÁÂÇ¥¸¦ ¸â¹ö Æ÷ÀÎÆ® º¯¼ö¿¡ ÀúÀå.
+	//ï¿½ï¿½Æ° ï¿½Ù¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	m_point.X = point.x;
 	m_point.Y = point.y;
-	// ÇÇ±Ô¾î °´Ã¼ »ý¼º.
+	// ï¿½Ç±Ô¾ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½.
 	m_figure = std::make_shared<Figure>();
 
-	//Ã¹Á¡°ú ³¡Á¡ ¼¼ÆÃÇÔ.
+	//Ã¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
-	//±×¸°´Ù.
-	InvalidateRect(FALSE);
+	//ï¿½×¸ï¿½ï¿½ï¿½.
+	CPoint startPoint;
+	CPoint endPoint;
+	int offset = 100;
+	startPoint.x = m_figure->startPoint.X;
+	startPoint.y = m_figure->startPoint.Y;
+	endPoint.x = m_figure->endPoint.X;
+	endPoint.y = m_figure->endPoint.Y;
+	if (startPoint.x > endPoint.x)
+	{
+		startPoint.x += offset;
+		endPoint.x -= offset;
+	}
+	else if (startPoint.x < endPoint.x)
+	{
+		startPoint.x -= offset;
+		endPoint.x += offset;
+	}
+	if (startPoint.y > endPoint.y)
+	{
+		startPoint.y += offset;
+		endPoint.y -= offset;
+	}
+	else if (startPoint.y < endPoint.y)
+	{
+		startPoint.y -= offset;
+		endPoint.y += offset;
+	}
+
+	CRect rt(startPoint, endPoint);
+	//CRect rt(endPoint, startPoint);
+	InvalidateRect(rt, FALSE);
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//InvalidateRect(rt,FALSE);
 	//Invalidate(FALSE);
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
-
+	m_IsMouseMove = true;
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//InvalidateRect(rt, FALSE);
 	if (m_IsBtnDown == true) {
 		m_IsMouseMove = true;
 		//UpdateWindow();
@@ -247,24 +285,55 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		m_point.Y = point.y;
 		m_IsSetStart = false;
 		m_figure->SetPoint(m_point, m_IsSetStart);
-		//BRUSH h_blue_brush = CreateSolidBrush(RGB(0, 0, 255));
+		CPoint startPoint;
+		CPoint endPoint;
+		int offset = 100;
+		startPoint.x = m_figure->startPoint.X;
+		startPoint.y = m_figure->startPoint.Y;
+		endPoint.x = m_figure->endPoint.X;
+		endPoint.y = m_figure->endPoint.Y;
+		if (startPoint.x > endPoint.x)
+		{
+			startPoint.x += offset;
+			endPoint.x -= offset;
+		}
+		else if (startPoint.x < endPoint.x)
+		{
+			startPoint.x -= offset;
+			endPoint.x += offset;
+		}
+		if (startPoint.y > endPoint.y)
+		{
+			startPoint.y += offset;
+			endPoint.y -= offset;
+		}
+		else if (startPoint.y < endPoint.y)
+		{
+			startPoint.y -= offset;
+			endPoint.y += offset;
+		}
+		//CRect rt(endPoint, startPoint);
+		CRect rt(startPoint, endPoint);
+		InvalidateRect(rt, TRUE);
+		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+		//InvalidateRect(rt, FALSE);
+		//HBRUSH h_blue_brush = CreateSolidBrush(RGB(255, 255, 255));
 		//HDC h_dc = ::GetDC(m_hWnd);
 		//SelectObject(h_dc, h_blue_brush);
 		//::ReleaseDC(m_hWnd, h_dc);
 		//InvalidateRect(rt, FALSE);
-		//CRect rt(m_figure->startPoint.X-sqrt(m_ThicknessOfPen*0.25), m_figure->startPoint.Y+ sqrt(m_ThicknessOfPen*0.25), m_figure->endPoint.X+ sqrt(m_ThicknessOfPen*0.25), m_figure->endPoint.Y- sqrt(m_ThicknessOfPen*0.25));
-		CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
 		//CRect rt;
-		//À©µµ¿ì ÇÚµé ¾ò±â
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½
 		//CWnd *pWnd = AfxGetMainWnd();
 		//HWND hWnd = pWnd->m_hWnd;
-		//À©µµ¿ì ¿µ¿ª ±¸ÇÏ±â
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
 		//::GetClientRect(hWnd, rt);
-		//Invalidate(TRUE) : WM_PAINT ¸Þ¼¼Áö ¹ß»ý, TRUE:¹è°æ Æ÷ÇÔ ÀçÃâ·Â / FALSE:¹è°æ Á¦¿Ü ÀçÃâ·Â
+		//Invalidate(TRUE) : WM_PAINT ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ß»ï¿½, TRUE:ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ / FALSE:ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 		//InvalidateRect(TRUE);
-		InvalidateRect(FALSE);
+		//InvalidateRect(rt,TRUE);
 		//FillRect(h_dc,rt,h_blue_brush);
-		//UpdateWindow() : °»½ÅÇÒ ¿µ¿ªÀÌ ÀÖÀ¸¸é Áï½Ã °»½ÅÇÏ¼¼¿ä
+		//UpdateWindow() : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½
 		//UpdateWindow();
 		//Invalidate(FALSE);
 		//m_IsMouseMove = false;
@@ -275,6 +344,7 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	m_IsMouseMove = false;
 	m_IsBtnDown = false;
 	SaveFigure(m_figure->startPoint,m_figure->endPoint);
 	//if(m_figure == NULL)
