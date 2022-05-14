@@ -21,8 +21,6 @@ CChildView::CChildView()
 	bool m_IsMouseMove = false;
 	bool m_IsBtnDown = false;
 	bool m_IsSetStart = false;
-	bool m_IsBtnDown = false;
-	bool m_IsMouseMove = false;
 }
 
 CChildView::~CChildView()
