@@ -80,7 +80,6 @@ void CChildView::OnDraw()
 	//HDC hDC = ::GetDC(hWnd);
 	//CPaintDC dc(this);
    // Gdiplus::Graphics g(dc.GetSafeHdc());
-
 	if (m_canvas == nullptr)
 		return;
 	if (m_figure == nullptr)
@@ -93,8 +92,8 @@ void CChildView::OnDraw()
 	//Gdiplus::Graphics g(m_canvas.get());
 	//Gdiplus::Graphics g(hDC);
 	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 20);
-	
-	//����Ʈ
+	mainG.DrawLine(&pen, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
+	//
 	/*
 	Figure m_figure2;
 	POSITION pos = m_figureList->GetHeadPosition();
@@ -129,8 +128,8 @@ void CChildView::OnDraw()
 	//	HDC h_dc = ::GetDC(m_hWnd);
 	//	BitBlt(h_dc, m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y, m_dc, 0, 0, SRCCOPY);
 
-	//	::ReleaseDC(m_hWnd, h_dc);         // ����ϴ� DC�� �����Ѵ�.
-	//	::ReleaseDC(m_hWnd, m_dc);  // ����ϴ� DC�� �����Ѵ�.
+	//	::ReleaseDC(m_hWnd, h_dc);         // 
+	//	::ReleaseDC(m_hWnd, m_dc);  // 
 
 	//}
 	//while (!m_figureList->IsEmpty())
@@ -144,7 +143,7 @@ void CChildView::OnDraw()
 	//	//m_figureList->RemoveAt(pos);
 	//}
 	
-	//memg �׽�Ʈ ��
+	//memg
 	//switch (m_mode)
 	//{
 	//case 1:
@@ -222,19 +221,38 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	//	Invalidate(FALSE);
 	//}
 	m_IsBtnDown = true;
-	//��ư �ٿ� �� ���콺 ����Ʈ ��ǥ�� ��� ����Ʈ ������ ����.
+	//
 	m_point.X = point.x;
 	m_point.Y = point.y;
-	// �ǱԾ� ��ü ����.
+	// 
 	m_figure = std::make_shared<Figure>();
 
-	//ù���� ���� ������.
+	//
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
-	//�׸���.
-	CPoint startPoint;
-	CPoint endPoint;
-	int offset = 100;
+	//
+
+	//
+
+	CPoint invaldateStartPoint;
+	CPoint invaldateEndPoint;
+	//
+	//SetInvalidateArea(invaldateStartPoint, invaldateEndPoint);
+	//
+
+
+	CRect rt(invaldateStartPoint, invaldateEndPoint);
+	//CRect rt(endPoint, startPoint);
+	//InvalidateRect(rt, FALSE);
+	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
+	//InvalidateRect(rt,FALSE);
+	//Invalidate(FALSE);
+	CWnd::OnLButtonDown(nFlags, point);
+}
+
+void CChildView::SetInvalidateArea(CPoint &startPoint, CPoint &endPoint)
+{
+	int offset = 50;
 	startPoint.x = m_figure->startPoint.X;
 	startPoint.y = m_figure->startPoint.Y;
 	endPoint.x = m_figure->endPoint.X;
@@ -259,14 +277,6 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 		startPoint.y -= offset;
 		endPoint.y += offset;
 	}
-
-	CRect rt(startPoint, endPoint);
-	//CRect rt(endPoint, startPoint);
-	InvalidateRect(rt, FALSE);
-	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
-	//InvalidateRect(rt,FALSE);
-	//Invalidate(FALSE);
-	CWnd::OnLButtonDown(nFlags, point);
 }
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
@@ -283,36 +293,44 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		m_point.Y = point.y;
 		m_IsSetStart = false;
 		m_figure->SetPoint(m_point, m_IsSetStart);
-		CPoint startPoint;
-		CPoint endPoint;
-		int offset = 100;
-		startPoint.x = m_figure->startPoint.X;
-		startPoint.y = m_figure->startPoint.Y;
-		endPoint.x = m_figure->endPoint.X;
-		endPoint.y = m_figure->endPoint.Y;
-		if (startPoint.x > endPoint.x)
-		{
-			startPoint.x += offset;
-			endPoint.x -= offset;
-		}
-		else if (startPoint.x < endPoint.x)
-		{
-			startPoint.x -= offset;
-			endPoint.x += offset;
-		}
-		if (startPoint.y > endPoint.y)
-		{
-			startPoint.y += offset;
-			endPoint.y -= offset;
-		}
-		else if (startPoint.y < endPoint.y)
-		{
-			startPoint.y -= offset;
-			endPoint.y += offset;
-		}
-		//CRect rt(endPoint, startPoint);
-		CRect rt(startPoint, endPoint);
-		InvalidateRect(rt, TRUE);
+		//CPoint startPoint;
+		//CPoint endPoint;
+		//int offset = 100;
+		//startPoint.x = m_figure->startPoint.X;
+		//startPoint.y = m_figure->startPoint.Y;
+		//endPoint.x = m_figure->endPoint.X;
+		//endPoint.y = m_figure->endPoint.Y;
+		//if (startPoint.x > endPoint.x)
+		//{
+		//	startPoint.x += offset;
+		//	endPoint.x -= offset;
+		//}
+		//else if (startPoint.x < endPoint.x)
+		//{
+		//	startPoint.x -= offset;
+		//	endPoint.x += offset;
+		//}
+		//if (startPoint.y > endPoint.y)
+		//{
+		//	startPoint.y += offset;
+		//	endPoint.y -= offset;
+		//}
+		//else if (startPoint.y < endPoint.y)
+		//{
+		//	startPoint.y -= offset;
+		//	endPoint.y += offset;
+		//}
+		////CRect rt(endPoint, startPoint);
+		//CRect rt(startPoint, endPoint);
+		CPoint invaldateStartPoint;
+		CPoint invaldateEndPoint;
+		//
+		SetInvalidateArea(invaldateStartPoint, invaldateEndPoint);
+		//
+
+
+		CRect rt(invaldateStartPoint, invaldateEndPoint);
+		InvalidateRect(rt, FALSE);
 		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
 		//InvalidateRect(rt, FALSE);
 		//HBRUSH h_blue_brush = CreateSolidBrush(RGB(255, 255, 255));
@@ -322,16 +340,16 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		//InvalidateRect(rt, FALSE);
 		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X, m_figure->endPoint.Y);
 		//CRect rt;
-		//������ �ڵ� ���
+		//
 		//CWnd *pWnd = AfxGetMainWnd();
 		//HWND hWnd = pWnd->m_hWnd;
-		//������ ���� ���ϱ�
+		//
 		//::GetClientRect(hWnd, rt);
-		//Invalidate(TRUE) : WM_PAINT �޼��� �߻�, TRUE:��� ���� ����� / FALSE:��� ���� �����
+		//Invalidate(TRUE) 
 		//InvalidateRect(TRUE);
 		//InvalidateRect(rt,TRUE);
 		//FillRect(h_dc,rt,h_blue_brush);
-		//UpdateWindow() : ������ ������ ������ ��� �����ϼ���
+		//UpdateWindow() : 
 		//UpdateWindow();
 		//Invalidate(FALSE);
 		//m_IsMouseMove = false;
