@@ -3,7 +3,7 @@
 
 #define SIZE 10
 
-void Figure::SetPoint(Gdiplus::Point point, int m_IsSetStart)
+void Figure::SetPoint(Gdiplus::Point point, bool m_IsSetStart)
 {
 	if(m_IsSetStart == true)
 	{
@@ -17,33 +17,4 @@ void Figure::SetPoint(Gdiplus::Point point, int m_IsSetStart)
 		endPoint.X = point.X;
 		endPoint.Y = point.Y;
 	}
-
-}
-
-void Figure::Pot(Gdiplus::Graphics * g, Gdiplus::Point * point)
-{
-	
-}
-
-void Figure::Line()
-{
-
-}
-void Figure::Rect(Gdiplus::Graphics * g, Gdiplus::Point * point)
-{
-	
-}
-void Figure::Ellipse(Gdiplus::Graphics * g, Gdiplus::Point * point)
-{
-	
-}
-
-void Figure::Text(Gdiplus::Graphics * g, Gdiplus::Point * point)
-{
-		 
-}
-
-void Figure::Clear()
-{
-
 }

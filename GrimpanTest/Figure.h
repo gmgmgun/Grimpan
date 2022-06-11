@@ -5,6 +5,9 @@
 	public:
 		Gdiplus::Point startPoint;
 		Gdiplus::Point endPoint;
+		Gdiplus::Point invalidateStart;
+		Gdiplus::Point invalidateEnd;
+
 		Figure()
 		{
 
@@ -12,7 +15,6 @@
 			startPoint.Y = 0;
 			endPoint.X = 0;
 			endPoint.Y = 0;
-
 		}
 		Figure(Gdiplus::Point startPoint, Gdiplus::Point endPoint)
 		{
@@ -29,7 +31,7 @@
 		void Ellipse(Gdiplus::Graphics * g, Gdiplus::Point * point);
 		void Text(Gdiplus::Graphics * g, Gdiplus::Point * point);
 		void Clear();
-		void SetPoint(Gdiplus::Point point, int IsBtnDown);
+		void SetPoint(Gdiplus::Point point, bool IsBtnDown);
 	
 		
 	};

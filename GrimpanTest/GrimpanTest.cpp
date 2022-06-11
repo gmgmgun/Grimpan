@@ -157,7 +157,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-//	ON_WM_LBUTTONUP()
+
 END_MESSAGE_MAP()
 
 // App command to run the dialog

@@ -82,9 +82,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 
 	cs.style = WS_OVERLAPPED | WS_CAPTION | FWS_ADDTOTITLE
-		 | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
-
+		 | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME;
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+
 	cs.lpszClass = AfxRegisterWndClass(0);
 	return TRUE;
 }

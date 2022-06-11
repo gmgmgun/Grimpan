@@ -7,7 +7,7 @@
 #define IDR_MAINFRAME                   128
 #define IDR_GrimpanTestTYPE             130
 #define ID_APP_OPEN                     32771
-#define ID_FILE_SAVE             32772
+//#define ID_FILE_SAVE             32772
 #define ID_FILE_SAVEAS                  32773
 #define ID_FILE_EXIT                    32774
 #define ID_EDIT_POT                     32775
