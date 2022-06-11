@@ -35,12 +35,7 @@ protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 public:
-	struct {
-		int startpointX;
-		int startpointY;
-		int endpointX;
-		int endpointY;
-	} figurePoint;
+
 	std::shared_ptr<Figure> m_figure;
 	std::shared_ptr<Gdiplus::Bitmap> m_canvas;
 	std::shared_ptr<CList<Figure, Figure&>> m_figureList;
@@ -56,13 +51,15 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnDrawCanvas();
+	void SetInvalidateArea(CPoint &startPoint, CPoint &endPoint);
 	void SaveFigure(Gdiplus::Point startPoint, Gdiplus::Point endPoint);
 	void LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint);
 	//CList<Figure, Figure&> m_figureList;
 	int m_mode;
+	int m_ThicknessOfPen;
+	bool m_IsMouseMove;
 	bool m_IsBtnDown;
 	bool m_IsSetStart;
-	bool m_IsMouseMove;
 	HDC m_dc;
 	void InitCanvas();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
