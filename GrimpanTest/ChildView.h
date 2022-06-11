@@ -57,7 +57,7 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnDrawCanvas();
 	void SaveFigure(Gdiplus::Point startPoint, Gdiplus::Point endPoint);
-	//void LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint);
+	void LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint);
 	//CList<Figure, Figure&> m_figureList;
 	int m_mode;
 	bool m_IsBtnDown;
