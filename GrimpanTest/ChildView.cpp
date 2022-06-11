@@ -86,6 +86,7 @@ void CChildView::OnDraw()
 		return;
 	CPaintDC dc(this); // device context for painting
 <<<<<<< HEAD
+<<<<<<< HEAD
 	CBitmap bMap;
 	
 	CRect rt;
@@ -95,25 +96,24 @@ void CChildView::OnDraw()
 =======
 	
 >>>>>>> 6ef6719d6fcec0b3b76ffd8eecf77dc212381cca
+=======
+
+>>>>>>> parent of 76c9eb4 (220611 Office)
 	Gdiplus::Graphics mainG(dc.GetSafeHdc());
-	Gdiplus::Graphics mainG();
-	Gdiplus::RectF rect(0, 0, rt.Width(), rt.Height());
-	mainG.FillRectangle(&mySolidBrush, rect);
-	//memDC.CreateCompatibleDC(&dc);
-	//Gdiplus::Graphics memG(memDC.GetSafeHdc());
 	//mainG.DrawImage(m_canvas.get(), 0, 0, m_canvas->GetWidth(), m_canvas->GetHeight());
-	
+
 	//Gdiplus::Graphics g(m_canvas.get());
 	//Gdiplus::Graphics g(hDC);
 	Gdiplus::Pen pen(Gdiplus::Color(255, 255, 0, 0), 20);
 <<<<<<< HEAD
 	
 	//리스트
-	
-	Figure figure;
+	/*
+	Figure m_figure2;
 	POSITION pos = m_figureList->GetHeadPosition();
 	for (int i = 1; i <= m_figureList->GetCount(); i++)
 	{
+<<<<<<< HEAD
 		figure = m_figureList->GetNext(pos);
 		mainG.DrawLine(&pen, figure.startPoint.X, figure.startPoint.Y, figure.endPoint.X, figure.endPoint.Y);
 =======
@@ -144,8 +144,12 @@ void CChildView::OnDraw()
 		memG.DrawString(L"TEXT", -1, &font, pointF, &solidBrush);
 		break;
 >>>>>>> 6ef6719d6fcec0b3b76ffd8eecf77dc212381cca
+=======
+		m_figure2 = m_figureList->GetNext(pos);
+		mainG.DrawLine(&pen, m_figure2.startPoint.X, m_figure2.startPoint.Y, m_figure2.endPoint.X, m_figure2.endPoint.Y);
+>>>>>>> parent of 76c9eb4 (220611 Office)
 	}
-	
+	*/
 	//if (m_IsMouseMove == true)
 	//{
 	//	Gdiplus::SolidBrush mySolidBrush(Gdiplus::Color(255, 255, 255, 255));
@@ -169,7 +173,11 @@ void CChildView::OnDraw()
 	//	//m_figureList->RemoveAt(pos);
 	//}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	switch (m_mode) //모드 선택
+=======
+	switch (m_mode)
+>>>>>>> parent of 76c9eb4 (220611 Office)
 	{
 	case 1:
 		break;
@@ -219,22 +227,26 @@ void CChildView::OnDraw()
 void CChildView::OnDrawPot()
 {
 	m_mode = 1;
+	//InvalidateRect();
 }
 
 
 void CChildView::OnDrawLine()
 {
 	m_mode = 2;
+	//InvalidateRect();
 }
 
 void CChildView::OnDrawRect()
 {
 	m_mode = 3;
+	//InvalidateRect();
 }
 
 void CChildView::OnDrawEllipse()
 {
 	m_mode = 4;
+	//InvalidateRect();
 }
 
 void CChildView::OnDrawText()
@@ -258,32 +270,29 @@ void CChildView::OnFileExit()
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 
-	//
-	//m_dc = ::GetDC(m_hWnd);
-//	if (m_figureList->GetCount() != 0)
-//	{
-//		Invalidate(FALSE);
-//	}
-	
-	//마우스 버튼을 눌렀을 때
+	m_dc = ::GetDC(m_hWnd);
+	//if (m_figureList->GetCount() != 0)
+	//{
+	//	Invalidate(FALSE);
+	//}
 	m_IsBtnDown = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
+=======
+>>>>>>> parent of 76c9eb4 (220611 Office)
 	//버튼 다운 시 마우스 포인트 좌표를 멤버 포인트 변수에 저장.
 	m_point.X = point.x;
 	m_point.Y = point.y;
-
 	// 피규어 객체 생성.
-	//m_figure = std::make_shared<Figure>();
+	m_figure = std::make_shared<Figure>();
 
-	//시작점 세팅함.
+	//첫점과 끝점 세팅함.
 	m_IsSetStart = true;
 	m_figure->SetPoint(m_point, m_IsSetStart);
-
 	//그린다.
-	//CPoint startPoint;
-	//CPoint endPoint;
-	/*
+	CPoint startPoint;
+	CPoint endPoint;
 	int offset = 100;
 =======
 	//
@@ -344,10 +353,15 @@ void CChildView::SetInvalidateArea(CPoint &startPoint, CPoint &endPoint)
 		endPoint.y += offset;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	*/
 	//CRect rt(startPoint, endPoint);
+=======
+
+	CRect rt(startPoint, endPoint);
+>>>>>>> parent of 76c9eb4 (220611 Office)
 	//CRect rt(endPoint, startPoint);
-	//InvalidateRect(rt, FALSE);
+	InvalidateRect(rt, FALSE);
 	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
 	//InvalidateRect(rt,FALSE);
 	//Invalidate(FALSE);
@@ -358,49 +372,31 @@ void CChildView::SetInvalidateArea(CPoint &startPoint, CPoint &endPoint)
 
 void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	//마우스가 이동
 	m_IsMouseMove = true;
-
 	//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
 	//InvalidateRect(rt, FALSE);
-
-	//버튼이 다운된 상태면
 	if (m_IsBtnDown == true) {
 		m_IsMouseMove = true;
 		//UpdateWindow();
-		//if (m_figureList->GetCount() != 0)
-		//{
-			
-			//Invalidate(FALSE);
-		//}
 		if (m_figure == NULL)
 			return;
-
-		//현재의 포인트 값을 멤버 변수에 저장
 		m_point.X = point.x;
 		m_point.Y = point.y;
-
-		//스타트 플래그를 false로 만들고
 		m_IsSetStart = false;
-		
-		//현재의 포인트 정보를 구조체에 저장
 		m_figure->SetPoint(m_point, m_IsSetStart);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 		//CPoint 변수 선언
+=======
+>>>>>>> parent of 76c9eb4 (220611 Office)
 		CPoint startPoint;
 		CPoint endPoint;
-
-		//InvalidateRect 시 짤림 방지
-		int offset = 50;
-
-		//GDIplus::Point를 CPoint로 변환
+		int offset = 100;
 		startPoint.x = m_figure->startPoint.X;
 		startPoint.y = m_figure->startPoint.Y;
 		endPoint.x = m_figure->endPoint.X;
 		endPoint.y = m_figure->endPoint.Y;
-
-		//시작 좌표 값과 마침 좌표 값을 비교하여 offset 값 적용
 		if (startPoint.x > endPoint.x)
 		{
 			startPoint.x += offset;
@@ -421,9 +417,9 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 			startPoint.y -= offset;
 			endPoint.y += offset;
 		}
-
-		//변동된 좌표로 rect를 생성
+		//CRect rt(endPoint, startPoint);
 		CRect rt(startPoint, endPoint);
+<<<<<<< HEAD
 		//TRUE -> InvalidateRect가 호출될 때마다 영역 무효화 , FALSE -> WM_PAINT만 발생할 뿐 영역을 무효화하진 않음.
 =======
 		//CPoint startPoint;
@@ -465,6 +461,9 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 		CRect rt(invaldateStartPoint, invaldateEndPoint);
 >>>>>>> 6ef6719d6fcec0b3b76ffd8eecf77dc212381cca
 		InvalidateRect(rt, FALSE);
+=======
+		InvalidateRect(rt, TRUE);
+>>>>>>> parent of 76c9eb4 (220611 Office)
 		//CRect rt(m_figure->startPoint.X, m_figure->startPoint.Y, m_figure->endPoint.X - m_figure->startPoint.X, m_figure->endPoint.Y - m_figure->startPoint.Y);
 		//InvalidateRect(rt, FALSE);
 		//HBRUSH h_blue_brush = CreateSolidBrush(RGB(255, 255, 255));
@@ -494,15 +493,11 @@ void CChildView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	//마우스 이동 안함
 	m_IsMouseMove = false;
-
-	//버튼 클릭 안함
 	m_IsBtnDown = false;
-
 	SaveFigure(m_figure->startPoint,m_figure->endPoint);
 	//if(m_figure == NULL)
-	//return;
+	//	return;
 	//m_point.X = point.x;
 	//m_point.Y = point.y;
 	//m_IsSetStart = false;
@@ -515,12 +510,15 @@ int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 		return -1;
 	m_figureList = std::make_shared<CList<Figure, Figure&>>();
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// 피규어 객체 생성.
 	m_figure = std::make_shared<Figure>();
 =======
 
 	return 0;
 >>>>>>> 6ef6719d6fcec0b3b76ffd8eecf77dc212381cca
+=======
+>>>>>>> parent of 76c9eb4 (220611 Office)
 }
 
 void CChildView::OnDrawCanvas() {
@@ -548,10 +546,10 @@ void CChildView::SaveFigure(Gdiplus::Point startPoint, Gdiplus::Point endPoint) 
 	m_figureList->AddTail(figure);
 }
 
-void CChildView::LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint) {
-	startPoint = m_figureList->GetTail().startPoint;
-	endPoint = m_figureList->GetTail().endPoint;
-}
+//void CChildView::LoadFigure(Gdiplus::Point &startPoint, Gdiplus::Point &endPoint) {
+//	startPoint = m_figureList->GetTail().startPoint;
+//	endPoint = m_figureList->GetTail().endPoint;
+//}
 
 
 void CChildView::OnSize(UINT nType, int cx, int cy)
